@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IGO-HUB</title>
+
+  <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+  <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: '#0B0F14',
+            surface: '#141A22',
+            primary: '#FF6B3D',
+            accent: '#FF9A3D',
+            textMain: '#F3F4F6',
+            textMuted: '#9CA3AF',
+          },
+          boxShadow: {
+            soft: '0 20px 60px rgba(0,0,0,0.45)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { background: #0B0F14; }
+  </style>
+</head>
+<body class="bg-background text-textMain min-h-screen">
+  <div id="root"></div>
+
+  <!-- Your existing backend layer -->
+  <script src="api.js"></script>
+  <script src="auth.js"></script>
+
+  <!-- Backend bridge used by React UI -->
+  <script src="utils/backend.js"></script>
+
+  <!-- Components -->
+  <script type="text/babel" src="components/Header.js"></script>
+  <script type="text/babel" src="components/Footer.js"></script>
+  <script type="text/babel" src="components/HeroSection.js"></script>
+  <script type="text/babel" src="components/FeatureSection.js"></script>
+
+  <!-- App -->
+  <script type="text/babel" src="app.js"></script>
+</body>
+</html>

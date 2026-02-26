@@ -1,0 +1,319 @@
+<!-- modals.html — igo modals mount (FIXED: no nested forms) -->
+
+<!-- SIGN IN -->
+<dialog id="signinModal" class="modal">
+  <div class="modal-shell">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Sign in</div>
+        <div class="muted" style="font-size:12px;">We send a 6-digit code to your email.</div>
+      </div>
+      <button class="btn btn-ghost btn-small" type="button" onclick="closeSignin()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="signinForm" class="grid" style="gap:10px;">
+        <label class="field">
+          <span>Email</span>
+          <input name="email" type="email" placeholder="name@email.com" required />
+        </label>
+        <button class="btn btn-primary" type="submit">Send code</button>
+      </form>
+
+      <form id="codeForm" class="grid" style="gap:10px; margin-top:12px; display:none;">
+        <label class="field">
+          <span>6-digit code</span>
+          <input name="code" inputmode="numeric" pattern="[0-9]{6}" placeholder="123456" required />
+        </label>
+
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button class="btn btn-primary" type="submit">Verify</button>
+          <button class="btn btn-outline" type="button" id="resendBtn">
+            Resend (<span id="resendT">30</span>)
+          </button>
+        </div>
+
+        <div class="muted" style="font-size:12px;">
+          Testing: code <b>555555</b> always works.
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<!-- PROFILE -->
+<dialog id="profileModal" class="modal">
+  <div class="modal-shell">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Profile</div>
+        <div class="muted" style="font-size:12px;">Your info stays private. Address is shared only after acceptance.</div>
+      </div>
+      <button class="btn btn-ghost btn-small" type="button" onclick="closeProfile()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="profileForm" class="grid" style="gap:10px;">
+        <label class="field">
+          <span>Name</span>
+          <input name="name" type="text" placeholder="Your name" />
+        </label>
+
+        <label class="field">
+          <span>Email (login)</span>
+          <input name="email" type="email" placeholder="(auto)" disabled />
+        </label>
+
+        <div class="grid" style="grid-template-columns:1fr 1fr; gap:10px;">
+          <label class="field">
+            <span>Phone</span>
+            <input name="phone" type="tel" placeholder="+41 ..." />
+          </label>
+          <label class="field">
+            <span>City</span>
+            <input name="city" type="text" placeholder="Lausanne" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Address</span>
+          <input name="address" type="text" placeholder="Street + number" />
+          <div class="muted" style="font-size:11px;margin-top:6px;">
+            Used to generate a Google Maps link for directions after acceptance.
+          </div>
+        </label>
+
+        <div class="grid" style="grid-template-columns:1fr 1fr; gap:10px;">
+          <label class="field">
+            <span>Payment method</span>
+            <input name="pay_method" type="text" placeholder="Cash / Twint / ..." />
+          </label>
+          <label class="field">
+            <span>Role (auto)</span>
+            <input name="role" type="text" placeholder="owner,walker" disabled />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Bio</span>
+          <textarea name="bio" rows="3" placeholder="Tell others what matters (experience, dogs you like, etc.)"></textarea>
+        </label>
+
+        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+          <label style="display:flex;gap:8px;align-items:center;">
+            <input type="checkbox" name="is_owner" />
+            <span>Owner</span>
+          </label>
+          <label style="display:flex;gap:8px;align-items:center;">
+            <input type="checkbox" name="is_walker" />
+            <span>Walker</span>
+          </label>
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+          <button class="btn btn-outline" type="button" onclick="closeProfile()">Cancel</button>
+          <button class="btn btn-primary" type="submit">Save profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<!-- POST WALK (OWNER) -->
+<dialog id="ownerModal" class="modal">
+  <div class="modal-shell">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Post a walk</div>
+        <div class="muted" style="font-size:12px;">Owners post. Walkers bid or accept.</div>
+      </div>
+      <button class="btn btn-ghost btn-small" type="button" onclick="closeOwnerModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="ownerForm" class="grid" style="gap:10px;">
+        <div class="grid" style="grid-template-columns:1fr 1fr; gap:10px;">
+          <label class="field">
+            <span>Your name</span>
+            <input name="name" type="text" placeholder="Owner name" />
+          </label>
+          <label class="field">
+            <span>Phone</span>
+            <input name="phone" type="tel" placeholder="+41 ..." />
+          </label>
+        </div>
+
+        <div class="grid" style="grid-template-columns:1fr 1fr; gap:10px;">
+          <label class="field">
+            <span>City</span>
+            <input name="city" type="text" placeholder="Renens" required />
+          </label>
+          <label class="field">
+            <span>Address</span>
+            <input name="address" type="text" placeholder="Street + number" />
+            <div class="muted" style="font-size:11px;margin-top:6px;">
+              Exact address is shared only after acceptance.
+            </div>
+          </label>
+        </div>
+
+        <div class="grid" style="grid-template-columns:1fr 1fr 1fr; gap:10px;">
+          <label class="field">
+            <span>Dog name</span>
+            <input name="dog_name" type="text" placeholder="Biscuit" />
+          </label>
+          <label class="field">
+            <span>Dog size</span>
+            <input name="dog_size" type="text" placeholder="Small / Medium / Large" />
+          </label>
+          <label class="field">
+            <span>Temperament</span>
+            <input name="temperament" type="text" placeholder="Calm / Reactive / ..." />
+          </label>
+        </div>
+
+        <div class="grid" style="grid-template-columns:1fr 1fr 1fr; gap:10px;">
+          <label class="field">
+            <span>Date</span>
+            <input id="date_owner" name="date" type="date" required />
+          </label>
+          <label class="field">
+            <span>Time</span>
+            <input name="time" type="time" required />
+          </label>
+          <label class="field">
+            <span>Duration (min)</span>
+            <input name="duration" type="number" min="10" step="5" placeholder="60" required />
+          </label>
+        </div>
+
+        <div class="grid" style="grid-template-columns:1fr 1fr; gap:10px;">
+          <label class="field">
+            <span>Max price (CHF)</span>
+            <input name="max_price" type="number" min="1" step="1" placeholder="30" />
+          </label>
+
+          <label class="field">
+            <span>Mode</span>
+            <select name="mode">
+              <option value="bidding">Bidding (review bids)</option>
+              <option value="first">First to accept (instant)</option>
+            </select>
+            <div class="muted" style="font-size:11px;margin-top:6px;">
+              “First to accept” assigns the first walker who places a valid bid.
+            </div>
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Notes</span>
+          <textarea name="notes" rows="3" placeholder="Leash, keys, dog habits, etc."></textarea>
+        </label>
+
+        <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+          <button class="btn btn-outline" type="button" onclick="closeOwnerModal()">Cancel</button>
+          <button class="btn btn-primary" type="submit">Post walk</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<!-- OPEN JOBS (WALKER) -->
+<dialog id="jobsModal" class="modal">
+  <div class="modal-shell">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Open walks</div>
+        <div class="muted" style="font-size:12px;">You’ll see an approximate area — exact address after acceptance.</div>
+      </div>
+      <button class="btn btn-ghost btn-small" type="button" onclick="closeJobs()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div id="jobsEmpty" class="muted" style="display:none;">No open walks right now.</div>
+      <div id="jobsList"></div>
+    </div>
+  </div>
+</dialog>
+
+<!-- OWNER JOBS -->
+<dialog id="ownerJobsModal" class="modal">
+  <div class="modal-shell">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">My walks</div>
+        <div class="muted" style="font-size:12px;">Open bids, accept, counter — all in one place.</div>
+      </div>
+      <button class="btn btn-ghost btn-small" type="button" onclick="closeOwnerJobs()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div id="ownerJobsEmpty" class="muted" style="display:none;">No walks posted yet.</div>
+      <div id="ownerJobsList"></div>
+    </div>
+  </div>
+</dialog>
+
+<!-- MY BIDS -->
+<dialog id="myBidsModal" class="modal">
+  <div class="modal-shell">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">My bids</div>
+        <div class="muted" style="font-size:12px;">Accept/decline counters here.</div>
+      </div>
+      <button class="btn btn-ghost btn-small" type="button" onclick="closeMyBids()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div id="myBidsEmpty" class="muted" style="display:none;">No bids yet.</div>
+      <div id="myBidsList"></div>
+    </div>
+  </div>
+</dialog>
+
+<!-- CURRENT WALKS -->
+<dialog id="currentWalksModal" class="modal">
+  <div class="modal-shell">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Current walks</div>
+        <div class="muted" style="font-size:12px;">Assigned and not completed. Chat + directions available.</div>
+      </div>
+      <button class="btn btn-ghost btn-small" type="button" onclick="closeCurrentWalks()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div id="currentWalksEmpty" class="muted" style="display:none;">No current walks.</div>
+      <div id="currentWalksList"></div>
+    </div>
+  </div>
+</dialog>
+
+<!-- CHAT -->
+<dialog id="chatModal" class="modal">
+  <div class="modal-shell">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="chatHeader">Chat</div>
+        <div class="muted" style="font-size:12px;">Only the owner + assigned walker can chat.</div>
+      </div>
+      <button class="btn btn-ghost btn-small" type="button" onclick="closeChat()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div id="chatMessages" class="chat-box" style="min-height:220px;"></div>
+
+      <form id="chatForm" class="grid" style="gap:10px; margin-top:10px;">
+        <label class="field">
+          <span>Message</span>
+          <textarea name="body" rows="2" placeholder="Write a message..."></textarea>
+        </label>
+        <div style="display:flex; gap:10px; justify-content:flex-end;">
+          <button class="btn btn-primary" type="submit">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>
